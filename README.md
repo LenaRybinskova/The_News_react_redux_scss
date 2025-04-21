@@ -23,3 +23,6 @@ type  initialStateType = {
     keyWordsCount:Record<string, number>
 }
 ```
+
+![Image alt](https://github.com/LenaRybinskova/The_News_react_redux_scss/blob/main/1.bmp)
+
