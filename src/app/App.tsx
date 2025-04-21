@@ -12,6 +12,7 @@ import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
 function App() {
     const [newsData, setNewsData] = useState<IData_SnippetNews[] | null>(null);
     const highlightsID = useSelector<AppRootStateType, Number[]>(state => state.app.filteredIDS);
+
     const newsWithHighlights = useSelector<AppRootStateType, IData_SnippetNews[]>(state => {
         const ids = state.app.filteredIDS
         const news = state.app.news

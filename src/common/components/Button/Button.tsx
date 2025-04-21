@@ -14,5 +14,3 @@ export function Button<T extends ElementType = "button">({ as, className, varian
             className={`${styles.button} ${styles[variant]} ${className}`}{...restProps} />
     )
 }
-
-//<Button as={Link} to="/profile" variant="link">Profile</Button>
