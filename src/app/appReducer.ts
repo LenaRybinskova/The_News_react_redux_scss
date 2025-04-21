@@ -8,12 +8,16 @@ type  initialStateType = {
     news: Record<number, IData_SnippetNews>,
     filteredIDS:Number[],
     status: RequestStatus,
+    keyWords:[]
+    keyWordsCount:Record<string, number>
 }
 
 const initialState: initialStateType = {
     news: {},
     status: 'idle',
     filteredIDS:[] as Number[],
+    keyWords:[],
+    keyWordsCount:{}
 }
 
 
@@ -26,20 +30,22 @@ export const appReducer = (state: initialStateType = initialState, action: any):
         case SET_NEWS:
             return {...state, news: {...state.news, [action.payload.ID]: action.payload,}}
         case FILTERED_TEXT:
-            const copyNews = {...state.news}
-            const newHighLight = findSentencesWithKeywords(copyNews, action.payload)
-            const filteredIDS = Object.keys(state.news).filter(id => newHighLight[+id]?.length > 0).map(id => +id);
+            const copyNews = { ...state.news }
+            const { highlightsById, keyWordsCount } = findSentencesWithKeywords(copyNews, action.payload)
 
-            const updatedNews = Object.entries(state.news).reduce((acc, [id, newsItem]) => {
-                if (filteredIDS.includes(+id)) {
-                    acc[+id] = {...newsItem, HIGHLIGHTS: newHighLight[+id] || [],};
-                } else {
-                    acc[+id] = newsItem;
+            const filteredIDS = Object.keys(copyNews)
+                .filter(id => highlightsById[+id]?.length > 0)
+                .map(id => +id)
+
+            const updatedNews = Object.entries(copyNews).reduce((acc, [id, newsItem]) => {
+                acc[+id] = {
+                    ...newsItem,
+                    HIGHLIGHTS: highlightsById[+id] || [],
                 }
-                return acc;
-            }, {} as Record<number, IData_SnippetNews>);
+                return acc
+            }, {} as Record<number, IData_SnippetNews>)
 
-            return {...state, news: updatedNews, filteredIDS,};
+            return {...state, news: updatedNews, filteredIDS, keyWords: action.payload, keyWordsCount,}
 
         default:
             return state
@@ -53,7 +59,6 @@ export const setNewsAC = (data: IData_SnippetNews) => {
 }
 
 export const filteredHightlightAC = (keywords: String[]) => {
-    console.log("filteredHightlightAC")
     return {
         type: FILTERED_TEXT,
         payload: keywords

@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import {useAppDispatch} from '@/app/store.ts';
 import {filteredHightlightAC} from '@/app/appReducer.ts';
 
+import {Input, Button} from 'antd';
+
 
 export function KeywordsInput() {
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState('smartphone');
     const dispatch = useAppDispatch();
 
     const handleSearch = () => {
@@ -17,17 +19,24 @@ export function KeywordsInput() {
         setInputValue('');
     };
 
+
     return (
-        <div style={{display: 'flex', gap: '8px'}}>
-            <input
-                type="text"
-                placeholder="InnovTech, autonomus driving, AutoPilot 5000"
+        <div style={{display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '20px' }}>
+            <div style={{ color: 'white' }}>Введите ключевые слова через запятую: </div>
+            <Input
+                placeholder="smartphone, consumers"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
+                onPressEnter={handleSearch}
+                allowClear
+                size="large"
+                style={{maxWidth: 400}}
             />
-            <button onClick={handleSearch} style={{padding: '8px 16px'}}>
-                Искать новости
-            </button>
+            <Button type="primary" onClick={handleSearch} size="large">
+                Искать
+            </Button>
         </div>
     );
+
+
 }

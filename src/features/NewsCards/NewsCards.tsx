@@ -2,6 +2,10 @@ import styles from './NewsCards.module.scss'
 import {Button} from '@/common/components/Button';
 import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
 import {Traffic} from '@/common/components/Traffic/Traffic.tsx';
+import {TextHighLight} from '@/common/components/TextHighLight/TextHighLight.tsx';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from '@/app/store.ts';
+import {KeyWord} from '@/common/components/KeyWord/KeyWord.tsx';
 
 
 type Props = {
@@ -9,8 +13,10 @@ type Props = {
 }
 
 export const NewsCards = ({newItem}: Props) => {
-    const {DP, TRAFFIC, TI,URL, DOM, CNTR, HIGHLIGHTS} = newItem
-    console.log("HIGHLIGHTS", HIGHLIGHTS)
+    const {DP, TRAFFIC, TI, URL, DOM, CNTR, HIGHLIGHTS, SENT} = newItem
+
+    const keyWords = useSelector<AppRootStateType, string[]>(state => state.app.keyWords);
+    const keyWordsCount = useSelector<AppRootStateType, Record<string, number>>(state => state.app.keyWordsCount);
 
     const dateFormatter = () => {
         const dateObj: Date = new Date(DP);
@@ -29,47 +35,34 @@ export const NewsCards = ({newItem}: Props) => {
                         {TRAFFIC.map(traffic => <Traffic key={traffic.count} item={traffic}/>)} </div>
                 </div>
                 <div className={styles.icons}>
-                    <span className={styles.sentiment}>Positive</span>
+                    <span className={styles.sentiment}>{SENT}</span>
                 </div>
             </div>
 
             <h3 className={styles.title}>{TI}</h3>
 
-            <div className={styles.meta}>
-                <a className={styles.source} href="#">{DOM}</a>
+            <div className={styles.authorInfo}>
+                <Button as="a" href={URL} className={styles.source}>{DOM}</Button>
                 <span className={styles.country}>{CNTR}</span>
                 <span className={styles.authors}>Emily C., Taormina A., et al.</span>
             </div>
 
             <p className={styles.snippet}>
-                {HIGHLIGHTS}
+                {HIGHLIGHTS.map(hl => <TextHighLight key={hl.length} hightLight={hl}/>)}
             </p>
 
             <div className={styles.tags}>
-                <span className={styles.tag}>AutoPilot 5000</span>
-                <span className={styles.tag}>InnovTech</span>
-                <span className={styles.tag}>autonomous driving</span>
-                <span className={styles.tag}>key word</span>
-                <span className={styles.tag}>key word</span>
-                <span className={styles.showAll}>Show All +9</span>
+                {keyWords.map(kw => <KeyWord key={kw} kw={kw} count={keyWordsCount[kw.toLowerCase()] || 0}/>)}
             </div>
 
-            <Button as="a"
-                    href={URL}
-                    className={styles.originalSourceButton}>Original Source</Button>
+            <Button as="a" href={URL} className={styles.originalSourceButton}>OriginalSource</Button>
 
             <div className={styles.duplicates}>
                 <span>Duplicates: <strong>192</strong></span>
                 <div className={styles.duplicateCard}>
-                    <span>18 Jun 2024 • 211K Top Reach</span>
-                    <p>
-                        Antivirus leggero: i migliori e più efficaci (free e a pagamento) 2024
-                    </p>
-                    <span>🇦🇹 ria.ru • Emily C., Taormina A., et al.</span>
                 </div>
             </div>
 
-            <button className={styles.viewDuplicates}>View Duplicates</button>
         </div>
     )
 }
