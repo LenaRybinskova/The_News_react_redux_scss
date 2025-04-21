@@ -5,7 +5,7 @@ import path from "node:path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base:"/Table_CRUD",
+  base:"/The_News_react_redux_scss",
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
