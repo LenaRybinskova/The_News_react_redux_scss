@@ -9,3 +9,13 @@
   display: flex;
   width: 100%;
 }
+
+:root {
+  --color-background-primary: #0e0f10;
+  --color-background-secondary: #0772cb;
+  --color-background-negative: #c32060;
+  --color-text-primary:#f9f9fa;
+  --color-text-secondary:#0565b7;
+
+;
+}

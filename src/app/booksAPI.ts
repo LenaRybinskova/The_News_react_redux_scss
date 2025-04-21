@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Book} from '@/app/booksAPI.types.ts';
+import {Book} from '@/app/newsAPI.types.ts';
 
 const instance = axios.create({
     baseURL: 'https://jsonplaceholder.typicode.com/',
