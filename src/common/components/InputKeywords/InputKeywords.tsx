@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-
+import React, {useState} from 'react';
+import {useAppDispatch} from '@/app/store.ts';
+import {filteredHightlightAC} from '@/app/appReducer.ts';
 
 
 export function KeywordsInput() {
-    const [inputValue, setInputValue] = useState("");
-    const dispatch = useDispatch();
+    const [inputValue, setInputValue] = useState('');
+    const dispatch = useAppDispatch();
 
     const handleSearch = () => {
         const keywords = inputValue
-            .split(",")
+            .split(',')
             .map((word) => word.trim())
-            .filter((word) => word !== "");
+            .filter((word) => word !== '');
 
-/*        dispatch(setKeywords(keywords));*/
-        setInputValue("");
+        dispatch(filteredHightlightAC(keywords))
+        setInputValue('');
     };
 
     return (
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{display: 'flex', gap: '8px'}}>
             <input
                 type="text"
                 placeholder="InnovTech, autonomus driving, AutoPilot 5000"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
             />
-            <button onClick={handleSearch} style={{ padding: "8px 16px" }}>
+            <button onClick={handleSearch} style={{padding: '8px 16px'}}>
                 Искать новости
             </button>
         </div>
