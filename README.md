@@ -1,4 +1,7 @@
 # The_News_react_redux_scss
+
+https://lenarybinskova.github.io/The_News_react_redux_scss/
+
 ## В проекте использовались библиотеки:
 - React
 - React - Redux
