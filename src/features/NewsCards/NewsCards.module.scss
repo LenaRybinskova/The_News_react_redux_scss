@@ -8,3 +8,33 @@
   padding: 1.5rem;
   border-radius: 10px;
 }
+
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statistic{
+  display: flex;
+  gap:20px;
+}
+
+.traffic{
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+}
+
+.icons{
+  display: flex;
+  flex-direction: row;
+}
+
+.sentiment{
+  background-color: var(--color-background-positive);
+  padding: 10px;
+  border-radius: 10px;
+}
+

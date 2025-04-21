@@ -1,34 +1,48 @@
 import styles from './NewsCards.module.scss'
 import {Button} from '@/common/components/Button';
+import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
+import {Traffic} from '@/common/components/Traffic/Traffic.tsx';
 
-export const NewsCards = () => {
+
+type Props = {
+    newItem: IData_SnippetNews
+}
+
+export const NewsCards = ({newItem}: Props) => {
+    const {DP, TRAFFIC, TI,URL, DOM, CNTR, HIGHLIGHTS} = newItem
+    console.log("HIGHLIGHTS", HIGHLIGHTS)
+
+    const dateFormatter = () => {
+        const dateObj: Date = new Date(DP);
+        const options: Intl.DateTimeFormatOptions = {day: 'numeric', month: 'long', year: 'numeric'};
+        return dateObj.toLocaleDateString('en-GB', options);
+    }
+
+
     return (
         <div className={styles.card}>
             <div className={styles.header}>
                 <div className={styles.statistic}>
-                    <span className={styles.date}>18 Jun 2024</span>
+                    <span className={styles.date}>{dateFormatter()}</span>
                     <span className={styles.reach}>211K Reach</span>
-                    <span className={styles.traffic}>Top Traffic: Austria 38% USA 12% Italian 8%</span>
+                    <div className={styles.traffic}>Top Traffic:
+                        {TRAFFIC.map(traffic => <Traffic key={traffic.count} item={traffic}/>)} </div>
                 </div>
                 <div className={styles.icons}>
                     <span className={styles.sentiment}>Positive</span>
-                    <div className={styles.iconBox}>i</div>
-                    <div className={styles.iconBox}></div>
                 </div>
             </div>
 
-            <h3 className={styles.title}>
-                Antivirus leggero: i migliori e più efficaci (free e a pagamento) 2024
-            </h3>
+            <h3 className={styles.title}>{TI}</h3>
 
             <div className={styles.meta}>
-                <a className={styles.source} href="#">Punto-info.it</a>
-                <span className={styles.country}>🇦🇹 Austria</span>
+                <a className={styles.source} href="#">{DOM}</a>
+                <span className={styles.country}>{CNTR}</span>
                 <span className={styles.authors}>Emily C., Taormina A., et al.</span>
             </div>
 
             <p className={styles.snippet}>
-               filtered text
+                {HIGHLIGHTS}
             </p>
 
             <div className={styles.tags}>
@@ -40,7 +54,9 @@ export const NewsCards = () => {
                 <span className={styles.showAll}>Show All +9</span>
             </div>
 
-            <Button as="a" href="https://www.globalsecuritymag.com/Mobile-bankers-left-vulnerable-47,20200819,101944.html" className={styles.originalSourceButton} >Original Source</Button>
+            <Button as="a"
+                    href={URL}
+                    className={styles.originalSourceButton}>Original Source</Button>
 
             <div className={styles.duplicates}>
                 <span>Duplicates: <strong>192</strong></span>
