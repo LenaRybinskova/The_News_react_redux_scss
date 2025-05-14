@@ -7,6 +7,7 @@ import {fetchNews} from '@/app/appReducer.ts';
 import {AppRootStateType, useAppDispatch} from '@/app/store.ts';
 import {useSelector} from 'react-redux';
 import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
+import {HighlightedTextarea} from '@/common/components/HighlightedTextarea';
 
 
 function App() {
@@ -32,8 +33,9 @@ function App() {
 
     return (
         <HashRouter basename={import.meta.env.VITE_PUBLIC_URL}>
-            <KeywordsInput/>
-            {newsData && newsData.map(newItem=><NewsCards key={newItem.ID} newItem={newItem}/>)}
+            {/*     <KeywordsInput/>*/}
+            <HighlightedTextarea/>
+            {newsData && newsData.map(newItem => <NewsCards key={newItem.ID} newItem={newItem}/>)}
         </HashRouter>
     )
 }
