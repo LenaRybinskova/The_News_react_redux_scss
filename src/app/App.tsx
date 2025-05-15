@@ -14,26 +14,34 @@ function App() {
     const [newsData, setNewsData] = useState<IData_SnippetNews[] | null>(null);
     const highlightsID = useSelector<AppRootStateType, Number[]>(state => state.app.filteredIDS);
 
-    const newsWithHighlights = useSelector<AppRootStateType, IData_SnippetNews[]>(state => {
+    //возвращаем массив объектов( нововстей) в которых есть совпадения
+    /*const newsWithHighlights = useSelector<AppRootStateType, IData_SnippetNews[]>(state => {
         const ids = state.app.filteredIDS
         const news = state.app.news
         return ids.map(id => news[id as number])
+    })*/
+
+    const newsWithHighlights = useSelector<AppRootStateType, IData_SnippetNews[]>(state => {
+        const ids = state.app.filteredIDS
+        const news = state.app.news
+        return ids.map(id => news[id as number]).filter(Boolean)  // фильтруем undefined
     })
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+
         dispatch(fetchNews())
     }, []);
 
     useEffect(() => {
+
         setNewsData(newsWithHighlights)
     }, [highlightsID]);
 
 
     return (
         <HashRouter basename={import.meta.env.VITE_PUBLIC_URL}>
-            {/*     <KeywordsInput/>*/}
             <HighlightedTextarea/>
             {newsData && newsData.map(newItem => <NewsCards key={newItem.ID} newItem={newItem}/>)}
         </HashRouter>

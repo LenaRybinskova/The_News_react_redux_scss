@@ -13,9 +13,12 @@ type Props = {
 }
 
 export const NewsCards = ({newItem}: Props) => {
+    console.log("NewsCards render")
     const {DP, TRAFFIC, TI, URL, DOM, CNTR, HIGHLIGHTS, SENT} = newItem
+    console.log("HIGHLIGHTS type:", Array.isArray(HIGHLIGHTS), HIGHLIGHTS);
 
-    const keyWords = useSelector<AppRootStateType, string[]>(state => state.app.keyWords);
+    const keyWordsArr = useSelector<AppRootStateType, string[][]>(state => state.app.keyWords);
+    const keyWords = keyWordsArr.flat();
     const keyWordsCount = useSelector<AppRootStateType, Record<string, number>>(state => state.app.keyWordsCount);
 
     const dateFormatter = () => {
@@ -48,11 +51,17 @@ export const NewsCards = ({newItem}: Props) => {
             </div>
 
             <p className={styles.snippet}>
-                {HIGHLIGHTS.map(hl => <TextHighLight key={hl.length} hightLight={hl}/>)}
+                {HIGHLIGHTS.map(((hl, index) => <TextHighLight key={index} hightLight={hl}/>))}
             </p>
 
-            <div className={styles.tags}>
+            {/*<div className={styles.tags}>
                 {keyWords.map(kw => <KeyWord key={kw} kw={kw} count={keyWordsCount[kw.toLowerCase()] || 0}/>)}
+            </div>*/}
+
+            <div className={styles.tags}>
+                {keyWords.map(kw => (
+                    <KeyWord key={kw} kw={kw} count={keyWordsCount[kw.toLowerCase()] || 0}/>
+                ))}
             </div>
 
             <Button as="a" href={URL} className={styles.originalSourceButton}>OriginalSource</Button>
