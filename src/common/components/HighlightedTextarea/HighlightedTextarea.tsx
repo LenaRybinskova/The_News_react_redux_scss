@@ -18,22 +18,23 @@ export const HighlightedTextarea = () => {
         setInputValue(e.currentTarget.value);
     };
     const onClickHandler = () => {
-        const parsed = lucene.parse(inputValue);
-        const keyWords = getKeywordsArr(parsed);
-        console.log("parsed lucene AST", keyWords);
+        const parse = lucene.parse(inputValue);
+        const keyWords = getKeywordsArr(parse);
+        console.log("keyWords", keyWords)
         dispatch(filteredHightlightAC(keyWords));
     };
 
 
     return (
-        <div>
-            <div>(“Kaspersky” OR “Avast”) AND “antivirus”</div>
-            <div>(TI=”Kaspersky” OR AB=”Avast”) AND NOT (DP=”2021-21-17” OR URL=”*.com”)</div>
-            <div style={{color: 'white'}}>Введите запрос:</div>
-            <TextArea rows={2} onChange={onChangeHandler}/>
-            <Button type="primary" onClick={onClickHandler} style={{marginTop: 8}}>
-                Поиск
-            </Button>
+        <div style={{color: 'white', display:"flex",  flexDirection:"column", gap:"15px"}}>
+            <div>Пример запроса:<p style={{fontSize: '24px'}} >(“Kaspersky” OR “Avast”) AND “antivirus”</p></div>
+            <div style={{display:"flex",  flexDirection:"row", gap:"15px"}}>
+                <TextArea rows={2} onChange={onChangeHandler}/>
+                <Button type="primary" onClick={onClickHandler} style={{marginTop: 8}}>
+                    Поиск
+                </Button>
+            </div>
+
         </div>
     )
 }

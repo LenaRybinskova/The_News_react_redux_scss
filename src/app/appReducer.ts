@@ -8,8 +8,8 @@ type  initialStateType = {
     news: Record<number, IData_SnippetNews>,
     filteredIDS:number[],
     status: RequestStatus,
-    keyWords:[]
-    keyWordsCount:Record<string, number>
+    keyWords:[]                           // ключевые слова
+    keyWordsCount:Record<string, number>  // для счетчика найденных совпадений по ключ словам
 }
 
 const initialState: initialStateType = {

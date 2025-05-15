@@ -5,7 +5,7 @@ type LuceneNode = {
     right?: LuceneNode;
 };
 
-// из объекта Lucene вытаск term и возвр массив строк (ключевых слов)
+// из объекта Lucene вытаск term и возвр массив массивов фраз
 export const getKeywordsArr = (ast: LuceneNode): string[][] => {
     const cleanTerm = (term: string): string =>
         term.replace(/^["'“”‘’]+|["'“”‘’]+$/g, '');
