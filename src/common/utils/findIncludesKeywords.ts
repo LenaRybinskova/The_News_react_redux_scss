@@ -1,5 +1,5 @@
 import {IData_SnippetNews} from '@/api/newsAPI.types.ts';
-
+// возвращает массив с фразами и колчество совпадений
 export const findSentencesWithKeywords = (
     news: Record<number, IData_SnippetNews>,
     keywordGroups: string[][]
