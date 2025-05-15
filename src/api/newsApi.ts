@@ -1,4 +1,4 @@
-import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
+import {IData_SnippetNews} from '@/api/newsAPI.types.ts';
 
 export const newsApi = {
     getNews(): Promise<IData_SnippetNews> {

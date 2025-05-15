@@ -1,4 +1,4 @@
-import {IData_TrafficItem} from '@/app/newsAPI.types.ts';
+import {IData_TrafficItem} from '@/api/newsAPI.types.ts';
 
 type Props={
     item:IData_TrafficItem

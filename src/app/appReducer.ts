@@ -1,21 +1,21 @@
 import {newsApi} from '@/api/newsApi.ts';
-import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
-import {findSentencesWithKeywords} from '@/common/utils/utils.ts';
+import {IData_SnippetNews} from '@/api/newsAPI.types.ts';
+import {findSentencesWithKeywords} from '@/common/utils/findIncludesKeywords.ts';
 
 
 export type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 type  initialStateType = {
     news: Record<number, IData_SnippetNews>,
-    filteredIDS:Number[],
+    filteredIDS:number[],
     status: RequestStatus,
-    keyWords:[]
-    keyWordsCount:Record<string, number>
+    keyWords:[]                           // ключевые слова
+    keyWordsCount:Record<string, number>  // для счетчика найденных совпадений по ключ словам
 }
 
 const initialState: initialStateType = {
     news: {},
     status: 'idle',
-    filteredIDS:[] as Number[],
+    filteredIDS:[] as number[],
     keyWords:[],
     keyWordsCount:{}
 }
@@ -34,8 +34,11 @@ export const appReducer = (state: initialStateType = initialState, action: any):
             const { highlightsById, keyWordsCount } = findSentencesWithKeywords(copyNews, action.payload)
 
             const filteredIDS = Object.keys(copyNews)
-                .filter(id => highlightsById[+id]?.length > 0)
-                .map(id => +id)
+                .filter(id => {
+                    const highlight = highlightsById[+id];
+                    return highlight && highlight.length > 0;
+                })
+                .map(id => +id);
 
             const updatedNews = Object.entries(copyNews).reduce((acc, [id, newsItem]) => {
                 acc[+id] = {
@@ -58,7 +61,7 @@ export const setNewsAC = (data: IData_SnippetNews) => {
     } as const
 }
 
-export const filteredHightlightAC = (keywords: String[]) => {
+export const filteredHightlightAC = (keywords: string[][]) => {
     return {
         type: FILTERED_TEXT,
         payload: keywords
