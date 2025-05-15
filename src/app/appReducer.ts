@@ -1,5 +1,5 @@
 import {newsApi} from '@/api/newsApi.ts';
-import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
+import {IData_SnippetNews} from '@/api/newsAPI.types.ts';
 import {findSentencesWithKeywords} from '@/common/utils/findIncludesKeywords.ts';
 
 

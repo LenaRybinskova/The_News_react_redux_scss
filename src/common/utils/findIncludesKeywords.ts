@@ -1,7 +1,5 @@
+import {IData_SnippetNews} from '@/api/newsAPI.types.ts';
 
-import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
-
-//функция ищет в новостях предложения по ключевым словам и эти предложения добавляет в HIGHLIGHTS, возвр массив предложений и счетчик, с счетчиком найденных слов
 export const findSentencesWithKeywords = (
     news: Record<number, IData_SnippetNews>,
     keywordGroups: string[][]
@@ -12,9 +10,9 @@ export const findSentencesWithKeywords = (
     const result: Record<number, string[]> = {};
     const keyWordsCount: Record<string, number> = {};
 
-    const flatKeywords = keywordGroups.flat().map(k => k.toLowerCase());
-    for (const word of flatKeywords) {
-        keyWordsCount[word] = 0;
+    const groupKeys = keywordGroups.map(group => group.map(k => k.toLowerCase()).join(' '));
+    for (const key of groupKeys) {
+        keyWordsCount[key] = 0;
     }
 
     for (const [id, item] of Object.entries(news)) {
@@ -25,16 +23,14 @@ export const findSentencesWithKeywords = (
             for (const sentence of sentences) {
                 const sentenceLower = sentence.toLowerCase();
 
-                const matchedGroup = keywordGroups.find(group =>
-                    group.every(keyword => sentenceLower.includes(keyword.toLowerCase()))
-                );
-
-                if (matchedGroup) {
-                    for (const keyword of matchedGroup) {
-                        keyWordsCount[keyword.toLowerCase()] += 1;
+                keywordGroups.forEach((group) => {
+                    const matched = group.every(keyword => sentenceLower.includes(keyword.toLowerCase()));
+                    if (matched) {
+                        const groupKey = group.map(k => k.toLowerCase()).join(' ');
+                        keyWordsCount[groupKey] += 1;
+                        highlights.push(sentence.trim());
                     }
-                    highlights.push(sentence.trim());
-                }
+                });
             }
         }
 

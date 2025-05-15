@@ -1,11 +1,12 @@
 import styles from './NewsCards.module.scss'
-import {Button} from '@/common/components/Button';
-import {IData_SnippetNews} from '@/app/newsAPI.types.ts';
+
+import {IData_SnippetNews} from '@/api/newsAPI.types.ts';
 import {Traffic} from '@/common/components/Traffic/Traffic.tsx';
 import {TextHighLight} from '@/common/components/TextHighLight/TextHighLight.tsx';
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from '@/app/store.ts';
 import {KeyWord} from '@/common/components/KeyWord/KeyWord.tsx';
+import {Button} from 'antd';
 
 
 type Props = {
@@ -15,10 +16,9 @@ type Props = {
 export const NewsCards = ({newItem}: Props) => {
     console.log("NewsCards render")
     const {DP, TRAFFIC, TI, URL, DOM, CNTR, HIGHLIGHTS, SENT} = newItem
-    console.log("HIGHLIGHTS type:", Array.isArray(HIGHLIGHTS), HIGHLIGHTS);
 
     const keyWordsArr = useSelector<AppRootStateType, string[][]>(state => state.app.keyWords);
-    const keyWords = keyWordsArr.flat();
+    const keyWords = keyWordsArr.map(arr => arr.join(' '));
     const keyWordsCount = useSelector<AppRootStateType, Record<string, number>>(state => state.app.keyWordsCount);
 
     const dateFormatter = () => {
@@ -45,7 +45,7 @@ export const NewsCards = ({newItem}: Props) => {
             <h3 className={styles.title}>{TI}</h3>
 
             <div className={styles.authorInfo}>
-                <Button as="a" href={URL} className={styles.source}>{DOM}</Button>
+                <Button href={URL} target="_blank">{DOM}</Button>
                 <span className={styles.country}>{CNTR}</span>
                 <span className={styles.authors}>Emily C., Taormina A., et al.</span>
             </div>
@@ -54,17 +54,13 @@ export const NewsCards = ({newItem}: Props) => {
                 {HIGHLIGHTS.map(((hl, index) => <TextHighLight key={index} hightLight={hl}/>))}
             </p>
 
-            {/*<div className={styles.tags}>
-                {keyWords.map(kw => <KeyWord key={kw} kw={kw} count={keyWordsCount[kw.toLowerCase()] || 0}/>)}
-            </div>*/}
-
             <div className={styles.tags}>
                 {keyWords.map(kw => (
                     <KeyWord key={kw} kw={kw} count={keyWordsCount[kw.toLowerCase()] || 0}/>
                 ))}
             </div>
 
-            <Button as="a" href={URL} className={styles.originalSourceButton}>OriginalSource</Button>
+            <Button href={URL} className={styles.originalSourceButton}>OriginalSource</Button>
 
             <div className={styles.duplicates}>
                 <span>Duplicates: <strong>192</strong></span>
